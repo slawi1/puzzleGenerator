@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Result</title></head>
+<body>
+<h2>Your Word Search</h2>
+
+<table class="word-search">
+    <tbody>
+    <tr th:each="row : ${result.getPuzzle()}">
+        <td th:each="cell : ${row}" th:text="${cell}">A</td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<h4>Words Placed:</h4>
+<!--<ul>-->
+<!--    <li th:each="word : ${wordSearchResult.addedWords}" th:text="${word}"></li>-->
+<!--    <li th:each="word : ${wordSearchResult.skippedWords}" th:text="${word}"></li>-->
+<!--</ul>-->
+
+<a th:href="@{/}">Generate another</a>
+</body>
+<style>
+    table.word-search {
+        border-collapse: collapse;
+        margin: 0 auto;
+    }
+
+    table.word-search td {
+        /*border: 0.5px solid black;*/
+        width: 28px;
+        height: 28px;
+        text-align: center;
+        vertical-align: middle;
+        font-family: 'Poppins', monospace;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    h1 {
+        text-align: center;
+        font-family: sans-serif;
+    }
+
+</style>
+
+</html>

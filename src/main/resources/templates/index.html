@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Word Search Generator</title></head>
+<body>
+<h2>Word Search Generator</h2>
+
+<form th:action="@{/generate}" method="post" th:object="${wordSearchRequest}">
+    <label>Words (comma or space separated):</label><br>
+    <textarea th:field="*{inputWords}" rows="4" cols="50"></textarea><br><br>
+
+    <label>Rows:</label>
+    <input type="number" th:field="*{rows}"><br>
+
+    <label>Cols:</label>
+    <input type="number" th:field="*{cols}"><br><br>
+
+    <button type="submit">Generate</button>
+</form>
+</body>
+</html>
