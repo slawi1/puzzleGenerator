@@ -1,11 +1,12 @@
 package com.wordsearch.puzzlegenerator.Service;
 
-import com.wordsearch.puzzlegenerator.Model.Directions;
-import com.wordsearch.puzzlegenerator.Model.WordSearchRequest;
-import com.wordsearch.puzzlegenerator.Model.WordSearchResult;
+
+import org.apache.commons.lang3.tuple.Pair;
+import com.wordsearch.puzzlegenerator.Model.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
 
 @Service
 public class PuzzleService {
@@ -21,8 +22,11 @@ public class PuzzleService {
 
         char[][] puzzle = new char[request.getRows()][request.getCols()];
 
+
+
         List<String> skippedWords = new ArrayList<>();
         List<String> addedWords = new ArrayList<>();
+        Set<Pair<Integer, Integer>> pairs = new HashSet<>();
 
         for (String word : words) {
             boolean placed = false;
@@ -50,6 +54,12 @@ public class PuzzleService {
                 if (canPlaceWordAt(puzzle, word, startRow, startCol, currentDirection)) {
                     placeWord(puzzle, word, startRow, startCol, currentDirection);
                     addedWords.add(word);
+                    for (int k = 0; k < word.length(); k++) {
+                        int answerRow = startRow + k * currentDirection.rowDelta();
+                        int answerCol = startCol + k * currentDirection.colDelta();
+
+                        pairs.add(Pair.of(answerRow, answerCol));
+                    }
                     placed = true;
                     break;
                 }
@@ -75,7 +85,8 @@ public class PuzzleService {
         System.out.println("Placed:" + addedWords);
 
 
-        return new WordSearchResult(puzzle, addedWords, skippedWords);
+
+        return new WordSearchResult(puzzle, addedWords, skippedWords, pairs);
 
     }
 
