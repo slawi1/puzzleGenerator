@@ -1,6 +1,5 @@
 package com.wordsearch.puzzlegenerator.Model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,14 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class WordSearchRequest {
-
-    String inputWords;
-
-    int rows;
-
-    int cols;
-
+@NoArgsConstructor
+public class Coordinate {
+    private int row;
+    private int col;
 }

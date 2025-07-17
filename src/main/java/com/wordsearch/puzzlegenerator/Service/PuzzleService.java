@@ -28,6 +28,9 @@ public class PuzzleService {
         List<String> addedWords = new ArrayList<>();
         Set<Pair<Integer, Integer>> pairs = new HashSet<>();
 
+        List<WordPosition> wordPositions = new ArrayList<>();
+
+
         for (String word : words) {
             boolean placed = false;
 
@@ -54,13 +57,28 @@ public class PuzzleService {
                 if (canPlaceWordAt(puzzle, word, startRow, startCol, currentDirection)) {
                     placeWord(puzzle, word, startRow, startCol, currentDirection);
                     addedWords.add(word);
+                    List<Coordinate> newCoordinates = new ArrayList<>();
                     for (int k = 0; k < word.length(); k++) {
                         int answerRow = startRow + k * currentDirection.rowDelta();
                         int answerCol = startCol + k * currentDirection.colDelta();
-
                         pairs.add(Pair.of(answerRow, answerCol));
+
+
+
+                        newCoordinates.add(new Coordinate(answerRow, answerCol));
+
+
                     }
                     placed = true;
+
+                    int cellSize = 20;
+                    StringBuilder sb = new StringBuilder();
+                    for(Coordinate coord : newCoordinates) {
+                        int x = coord.getCol() * cellSize + cellSize / 2;
+                        int y = coord.getRow() * cellSize + cellSize / 2;
+                        sb.append(x).append(',').append(y).append(' ');
+                    }
+                    wordPositions.add(new WordPosition(word, List.of(sb)));
                     break;
                 }
             }
@@ -68,10 +86,14 @@ public class PuzzleService {
                 skippedWords.add(word);
             }
         }
+
         for (int i = 0; i < puzzle.length; i++) {
             for (int j = 0; j < puzzle[i].length; j++) {
                 if (puzzle[i][j] == '\0') {
-                    puzzle[i][j] = '*';
+                    Random random = new Random();
+                    int letter = random.nextInt(90 - 65) + 65;
+                    char randomLetter = (char) letter;
+                    puzzle[i][j] = randomLetter;
                 }
             }
         }
@@ -86,7 +108,8 @@ public class PuzzleService {
 
 
 
-        return new WordSearchResult(puzzle, addedWords, skippedWords, pairs);
+
+        return new WordSearchResult(puzzle, addedWords, skippedWords, pairs, wordPositions);
 
     }
 

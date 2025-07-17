@@ -1,10 +1,10 @@
 package com.wordsearch.puzzlegenerator.Model;
 
-import org.apache.commons.lang3.tuple.Pair;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 import java.util.Set;
@@ -22,5 +22,7 @@ public class WordSearchResult {
     List<String> skippedWords;
 
     Set<Pair<Integer, Integer>> pairs;
+
+    List<WordPosition> wordPosition;
 
 }
