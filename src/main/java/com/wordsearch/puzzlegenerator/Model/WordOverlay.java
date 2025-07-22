@@ -1,5 +1,12 @@
 package com.wordsearch.puzzlegenerator.Model;
 
+import lombok.*;
+
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class WordOverlay {
 
     private String word;

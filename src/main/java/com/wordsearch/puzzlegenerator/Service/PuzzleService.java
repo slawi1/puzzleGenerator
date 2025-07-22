@@ -1,7 +1,6 @@
 package com.wordsearch.puzzlegenerator.Service;
 
 
-import org.apache.commons.lang3.tuple.Pair;
 import com.wordsearch.puzzlegenerator.Model.*;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +12,8 @@ public class PuzzleService {
 
     public WordSearchResult generatePuzzle(WordSearchRequest request) {
 
+        List<WordOverlay> wordOverlays = new ArrayList<>();
+
         String[] splitWords = request.getInputWords().split("\\s+");
         List<String> words = Arrays.stream(splitWords)
                 .map(String::trim)
@@ -22,14 +23,8 @@ public class PuzzleService {
 
         char[][] puzzle = new char[request.getRows()][request.getCols()];
 
-
-
         List<String> skippedWords = new ArrayList<>();
         List<String> addedWords = new ArrayList<>();
-        Set<Pair<Integer, Integer>> pairs = new HashSet<>();
-
-        List<WordPosition> wordPositions = new ArrayList<>();
-
 
         for (String word : words) {
             boolean placed = false;
@@ -57,30 +52,19 @@ public class PuzzleService {
                 if (canPlaceWordAt(puzzle, word, startRow, startCol, currentDirection)) {
                     placeWord(puzzle, word, startRow, startCol, currentDirection);
                     addedWords.add(word);
-                    List<Coordinate> newCoordinates = new ArrayList<>();
-                    for (int k = 0; k < word.length(); k++) {
-                        int answerRow = startRow + k * currentDirection.rowDelta();
-                        int answerCol = startCol + k * currentDirection.colDelta();
-                        pairs.add(Pair.of(answerRow, answerCol));
-
-
-
-                        newCoordinates.add(new Coordinate(answerRow, answerCol));
-
-
-                    }
+                    WordOverlay overlay = WordOverlay.builder()
+                            .word(word)
+                            .startX(startRow)
+                            .startY(startCol)
+                            .endX(startRow + (word.length() - 1) * currentDirection.rowDelta())
+                            .endY(startCol + (word.length() - 1) * currentDirection.colDelta())
+                            .build();
+                    wordOverlays.add(overlay);
                     placed = true;
-
-                    int cellSize = 20;
-                    StringBuilder sb = new StringBuilder();
-                    for(Coordinate coord : newCoordinates) {
-                        int x = coord.getCol() * cellSize + cellSize / 2;
-                        int y = coord.getRow() * cellSize + cellSize / 2;
-                        sb.append(x).append(',').append(y).append(' ');
-                    }
-                    wordPositions.add(new WordPosition(word, List.of(sb)));
                     break;
+
                 }
+
             }
             if (!placed) {
                 skippedWords.add(word);
@@ -106,10 +90,7 @@ public class PuzzleService {
         System.out.println("Skipped:" + skippedWords);
         System.out.println("Placed:" + addedWords);
 
-
-
-
-        return new WordSearchResult(puzzle, addedWords, skippedWords, pairs, wordPositions);
+        return new WordSearchResult(puzzle, addedWords, skippedWords, wordOverlays);
 
     }
 
