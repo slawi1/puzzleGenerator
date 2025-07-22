@@ -54,10 +54,10 @@ public class PuzzleService {
                     addedWords.add(word);
                     WordOverlay overlay = WordOverlay.builder()
                             .word(word)
-                            .startX(startRow)
-                            .startY(startCol)
-                            .endX(startRow + (word.length() - 1) * currentDirection.rowDelta())
-                            .endY(startCol + (word.length() - 1) * currentDirection.colDelta())
+                            .startX(startCol)
+                            .startY(startRow)
+                            .endX(Math.abs(startCol + (word.length() - 1) * currentDirection.colDelta()))
+                            .endY(Math.abs(startRow + (word.length() - 1) * currentDirection.rowDelta()))
                             .build();
                     wordOverlays.add(overlay);
                     placed = true;
