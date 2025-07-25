@@ -4,22 +4,19 @@
 <body>
 <h2>Your Word Search</h2>
 <div class="word-container">
-<table class="word-search">
-    <tbody>
-    <tr th:each="row : ${result.getPuzzle()}">
-        <td th:each="cell : ${row}" th:text="${cell}">A</td>
-    </tr>
-    </tbody>
-</table>
-<svg class="overlay" viewBox="0 0 10 10" preserveAspectRatio="none">
-        <th:block th:each="word : ${result.wordOverlays}">
-        <rect th:attr="x=${word.startX},
-        y=${word.startY},
-        width=${word.endX - word.startX + 1},
-        height=${word.endY - word.startY + 1}"
-              stroke="orange" stroke-width="0.15" fill="none" rx="0.5" ry="0.5"
-        />
-        </th:block>
+    <table class="word-search">
+        <tbody>
+        <tr th:each="row : ${result.getPuzzle()}">
+            <td th:each="cell : ${row}" th:text="${cell}">A</td>
+        </tr>
+        </tbody>
+    </table>
+    <svg class="overlay" viewBox="0 0 10 10" preserveAspectRatio="none">
+                <th:block th:each="word : ${result.wordOverlays}">
+        <!--        <polygon th:attr="points=|${word.startX},${word.startY} ${word.endX},${word.startY} ${word.endX},${word.endY} ${word.startX},${word.endY}|"-->
+        <polyline th:attr=" points=|${word.startX + 0.5}, ${word.startY + 0.5},${word.endX + 0.5}, ${word.endY + 0.5}|"
+                 fill="none" stroke="gray" stroke-width="0.6" stroke-linecap="round" stroke-opacity="0.3"/>
+                </th:block>
     </svg>
 </div>
 <h4>Words Placed:</h4>
