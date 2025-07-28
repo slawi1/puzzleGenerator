@@ -11,9 +11,8 @@
         </tr>
         </tbody>
     </table>
-    <svg class="overlay" viewBox="0 0 10 10" preserveAspectRatio="none">
+    <svg class="overlay" th:attr="viewBox=|0 0 ${result.getColSize()} ${result.getRowSize()}|" preserveAspectRatio="none">
                 <th:block th:each="word : ${result.wordOverlays}">
-        <!--        <polygon th:attr="points=|${word.startX},${word.startY} ${word.endX},${word.startY} ${word.endX},${word.endY} ${word.startX},${word.endY}|"-->
         <polyline th:attr=" points=|${word.startX + 0.5}, ${word.startY + 0.5},${word.endX + 0.5}, ${word.endY + 0.5}|"
                  fill="none" stroke="gray" stroke-width="0.6" stroke-linecap="round" stroke-opacity="0.3"/>
                 </th:block>

@@ -1,7 +1,10 @@
 package com.wordsearch.puzzlegenerator.Service;
 
 
-import com.wordsearch.puzzlegenerator.Model.*;
+import com.wordsearch.puzzlegenerator.Model.Directions;
+import com.wordsearch.puzzlegenerator.Model.WordOverlay;
+import com.wordsearch.puzzlegenerator.Model.WordSearchRequest;
+import com.wordsearch.puzzlegenerator.Model.WordSearchResult;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -21,7 +24,10 @@ public class PuzzleService {
                 .map(String::toUpperCase)
                 .toList();
 
-        char[][] puzzle = new char[request.getRows()][request.getCols()];
+        int rowSize = request.getRows();
+        int colSize = request.getCols();
+
+        char[][] puzzle = new char[rowSize][colSize];
 
         List<String> skippedWords = new ArrayList<>();
         List<String> addedWords = new ArrayList<>();
@@ -90,7 +96,7 @@ public class PuzzleService {
         System.out.println("Skipped:" + skippedWords);
         System.out.println("Placed:" + addedWords);
 
-        return new WordSearchResult(puzzle, addedWords, skippedWords, wordOverlays);
+        return new WordSearchResult(puzzle, rowSize, colSize, addedWords, skippedWords, wordOverlays);
 
     }
 

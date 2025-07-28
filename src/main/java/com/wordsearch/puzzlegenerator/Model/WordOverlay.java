@@ -10,8 +10,12 @@ import lombok.*;
 public class WordOverlay {
 
     private String word;
+
     private int startX;
+
     private int startY;
+
     private int endX;
+
     private int endY;
 }

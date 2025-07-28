@@ -15,6 +15,10 @@ public class WordSearchResult {
 
     char[][] puzzle;
 
+    int rowSize;
+
+    int colSize;
+
     List<String> addedWords;
 
     List<String> skippedWords;

@@ -29,15 +29,9 @@ public class PuzzleController {
     }
 
     @PostMapping("/generate")
-    public String  generatePuzzle(@ModelAttribute WordSearchRequest wordSearchRequest, Model model) {
+    public String generatePuzzle(@ModelAttribute WordSearchRequest wordSearchRequest, Model model) {
 
         WordSearchResult result = puzzleService.generatePuzzle(wordSearchRequest);
-
-        for (int row = 0; row < result.getPuzzle().length; row++) {
-            for (int col = 0; col < result.getPuzzle()[row].length; col++) {
-                char current = result.getPuzzle()[row][col];
-            }
-        }
 
         model.addAttribute("result", result);
 
