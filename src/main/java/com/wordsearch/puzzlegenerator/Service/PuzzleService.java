@@ -1,10 +1,7 @@
 package com.wordsearch.puzzlegenerator.Service;
 
 
-import com.wordsearch.puzzlegenerator.Model.Directions;
-import com.wordsearch.puzzlegenerator.Model.WordOverlay;
-import com.wordsearch.puzzlegenerator.Model.WordSearchRequest;
-import com.wordsearch.puzzlegenerator.Model.WordSearchResult;
+import com.wordsearch.puzzlegenerator.Model.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -24,8 +21,18 @@ public class PuzzleService {
                 .map(String::toUpperCase)
                 .toList();
 
+        int longestWordLength = 0;
+        for (String word : words) {
+            if (word.length() > longestWordLength) {
+                longestWordLength = word.length();
+            }
+        }
+
         int rowSize = request.getRows();
         int colSize = request.getCols();
+
+        if (longestWordLength <= rowSize && longestWordLength <= colSize) {
+
 
         char[][] puzzle = new char[rowSize][colSize];
 
@@ -77,6 +84,7 @@ public class PuzzleService {
             }
         }
 
+
         for (int i = 0; i < puzzle.length; i++) {
             for (int j = 0; j < puzzle[i].length; j++) {
                 if (puzzle[i][j] == '\0') {
@@ -98,6 +106,9 @@ public class PuzzleService {
 
         return new WordSearchResult(puzzle, rowSize, colSize, addedWords, skippedWords, wordOverlays);
 
+        }else {
+            throw new DomainException("Word length cannot be greater than row length or col length");
+        }
     }
 
     private void placeWord(char[][] puzzle, String word, int startRow, int startCol, Directions direction) {
