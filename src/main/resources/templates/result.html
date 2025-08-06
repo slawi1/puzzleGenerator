@@ -1,58 +1,154 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Result</title></head>
+<head><title>Result</title>
+    <style>
+        .word-container {
+            width: 100%;
+            position: relative;
+            display: inline-block;
+            align-items: center;
+            align-content: center;
+        }
+
+        .word-search {
+            width: 100%;
+            font-size: 16px;
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+
+        .word-search td {
+            width: 1em;
+            height: 1em;
+            text-align: center;
+            border-collapse: collapse;
+            font-family: monospace;
+            padding: 0;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        form {
+            max-width: 100%;
+            margin: 0;
+        }
+
+        ul {
+            font-size: 16px;
+            display: grid;
+            column-gap: 0.2em;
+            row-gap: 0;
+            grid-auto-columns: 1fr;
+            grid-auto-rows: 1fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+            text-align: left;
+
+
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .words {
+            padding-bottom: 3em;
+            padding-top: 1em;
+        }
+
+        h2 {
+            padding-top: 22em;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        ul li {
+            list-style: none;
+        }
+
+        .body {
+            max-width: 1000px;
+            width: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 0%);
+        }
+
+        .button {
+            padding-top: 3em;
+        }
+
+        body {
+            position: relative;
+        }
+
+        html {
+            font-size: 16px;
+            font-family: 'Poppins', monospace;
+        }
+    </style>
+</head>
+
 <body>
-<h2>Your Word Search</h2>
-<div class="word-container">
-    <table class="word-search">
-        <tbody>
-        <tr th:each="row : ${result.getPuzzle()}">
-            <td th:each="cell : ${row}" th:text="${cell}">A</td>
-        </tr>
-        </tbody>
-    </table>
-    <svg class="overlay" th:attr="viewBox=|0 0 ${result.getColSize()} ${result.getRowSize()}|" preserveAspectRatio="none">
-                <th:block th:each="word : ${result.wordOverlays}">
-        <polyline th:attr=" points=|${word.startX + 0.5}, ${word.startY + 0.5},${word.endX + 0.5}, ${word.endY + 0.5}|"
-                 fill="none" stroke="gray" stroke-width="0.6" stroke-linecap="round" stroke-opacity="0.3"/>
-                </th:block>
-    </svg>
+<div class="body">
+    <div>
+        <h2 th:text="'Puzzle #' + ${result.getPuzzleName()}">Your Word Search</h2>
+
+        <table class="word-search">
+            <tbody>
+            <tr th:each="row : ${result.getPuzzle()}">
+                <td th:each="cell : ${row}" th:text="${cell}">A</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="words">
+        <ul>
+            <li th:each="word : ${result.getAddedWords()}" th:text="'&#x2610;' + ${word}"></li>
+        </ul>
+    </div>
+
+    <div class="word-container">
+        <table class="word-search">
+            <tbody>
+            <tr th:each="row : ${result.getPuzzle()}">
+                <td th:each="cell : ${row}" th:text="${cell}">A</td>
+            </tr>
+            </tbody>
+        </table>
+        <svg class="overlay" th:attr="viewBox=|0 0 ${result.getColSize()} ${result.getRowSize()}|"
+             preserveAspectRatio="none">
+            <th:block th:each="word : ${result.wordOverlays}">
+                <polyline
+                        th:attr=" points=|${word.startX + 0.5}, ${word.startY + 0.5},${word.endX + 0.5}, ${word.endY + 0.5}|"
+                        fill="none" stroke="gray" stroke-width="0.69" stroke-linecap="round" stroke-opacity="0.35"/>
+            </th:block>
+        </svg>
+    </div>
+
+
+    <div class="button">
+        <form method="POST" action="/download-pdf" target="_blank">
+            <input type="hidden" name="html" id="htmlField">
+            <button type="submit">Свали като PDF</button>
+        </form>
+
+        <script>
+            document.querySelector("form").addEventListener("submit", function (e) {
+                const htmlContent = document.documentElement.outerHTML;
+                document.getElementById("htmlField").value = htmlContent;
+            });
+        </script>
+    </div>
 </div>
-<br>
-
-<a th:href="@{/}">Generate another</a>
 </body>
-<style>
-
-
-    .word-container {
-        position: relative;
-        display: inline-block;
-    }
-
-    .word-search {
-        font-size: 20px;
-        border-collapse: collapse;
-    }
-
-    .word-search td {
-        width: 1em;
-        height: 1em;
-        text-align: center;
-        border: 1px solid black;
-        font-family: monospace;
-        padding: 0;
-    }
-
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-    }
-
-</style>
 
 </html>

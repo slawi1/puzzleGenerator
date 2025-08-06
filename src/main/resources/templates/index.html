@@ -5,7 +5,10 @@
 <h2>Word Search Generator</h2>
 
 <form th:action="@{/generate}" method="post" th:object="${wordSearchRequest}">
-    <label>Words (space separated):</label><br>
+    <label>Puzzle Name:</label>
+    <input type="text" th:field="*{puzzleName}"><br>
+
+    <label>Words (coma separated):</label><br>
     <textarea th:field="*{inputWords}" rows="4" cols="50"></textarea><br><br>
 
     <label>Rows:</label>

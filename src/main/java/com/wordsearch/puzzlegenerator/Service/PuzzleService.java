@@ -1,6 +1,5 @@
 package com.wordsearch.puzzlegenerator.Service;
 
-
 import com.wordsearch.puzzlegenerator.Model.*;
 import org.springframework.stereotype.Service;
 
@@ -14,15 +13,18 @@ public class PuzzleService {
 
         List<WordOverlay> wordOverlays = new ArrayList<>();
 
-        String[] splitWords = request.getInputWords().split("\\s+");
+        String[] splitWords = request.getInputWords().split(",");
         List<String> words = Arrays.stream(splitWords)
-                .map(String::trim)
+                .map(String::strip)
                 .filter(w -> !w.isEmpty())
                 .map(String::toUpperCase)
                 .toList();
 
         int longestWordLength = 0;
         for (String word : words) {
+            if (word.contains(" ")) {
+                word = word.replaceAll("\\s+", "");
+            }
             if (word.length() > longestWordLength) {
                 longestWordLength = word.length();
             }
@@ -40,9 +42,13 @@ public class PuzzleService {
         List<String> addedWords = new ArrayList<>();
 
         for (String word : words) {
+
+            if (word.contains(" ")) {
+                word = word.replaceAll("\\s+", "");
+            }
             boolean placed = false;
 
-            for (int i = 0; i < 300; i++) {
+            for (int i = 0; i < 500; i++) {
                 List<Directions> directions = Arrays.asList(Directions.values());
                 Collections.shuffle(directions);
                 Directions currentDirection = directions.getFirst();
@@ -104,7 +110,7 @@ public class PuzzleService {
         System.out.println("Skipped:" + skippedWords);
         System.out.println("Placed:" + addedWords);
 
-        return new WordSearchResult(puzzle, rowSize, colSize, addedWords, skippedWords, wordOverlays);
+        return new WordSearchResult(request.getPuzzleName(), puzzle, rowSize, colSize, addedWords, skippedWords, wordOverlays);
 
         }else {
             throw new DomainException("Word length cannot be greater than row length or col length");

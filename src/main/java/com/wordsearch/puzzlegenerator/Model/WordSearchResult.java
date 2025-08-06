@@ -13,6 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 public class WordSearchResult {
 
+    String puzzleName;
+
     char[][] puzzle;
 
     int rowSize;

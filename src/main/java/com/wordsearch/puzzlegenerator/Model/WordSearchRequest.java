@@ -12,6 +12,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class WordSearchRequest {
 
+    String puzzleName;
+
     String inputWords;
 
     int rows;
